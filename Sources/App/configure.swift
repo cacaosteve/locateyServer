@@ -7,12 +7,12 @@ public func configure(_ app: Application) throws {
     // uncomment to serve files from /Public folder
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
-//    app.databases.use(.postgres(
-//        hostname: Environment.get("DATABASE_HOST") ?? "ec2-52-204-232-46.compute-1.amazonaws.com",
-//        username: Environment.get("DATABASE_USERNAME") ?? "lbpgyxrlagqfzc",
-//        password: Environment.get("DATABASE_PASSWORD") ?? "52c4b6787be2c2090fb4efe37883f944edd3c145f6823521a0aa82247237eb18",
-//        database: Environment.get("DATABASE_NAME") ?? "d3gca1p92qcsv4"
-//    ), as: .psql)
+    app.databases.use(.postgres(
+        hostname: Environment.get("DATABASE_HOST") ?? "ec2-54-224-175-142.compute-1.amazonaws.com",
+        username: Environment.get("DATABASE_USERNAME") ?? "kitlqpasbtjita",
+        password: Environment.get("DATABASE_PASSWORD") ?? "8f4317488cb19216cede65119d042e526d923509a97c3ea866946c5ac755e9ec",
+        database: Environment.get("DATABASE_NAME") ?? "da2mm3hmrcqjc8"
+    ), as: .psql)
     
     #if DEBUG
     app.databases.use(.postgres(
