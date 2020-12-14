@@ -5,6 +5,7 @@ struct CreateUsers: Migration {
         database.schema(User.schema)
             .field("id", .uuid, .identifier(auto: false))
             .field("username", .string, .required)
+            .field("name", .string, .required)
             .unique(on: "username")
             .field("password_hash", .string, .required)
             .field("latitude", .double, .required)

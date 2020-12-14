@@ -2,8 +2,10 @@ import Fluent
 import Vapor
 
 final class User: Model {
+    
     struct Public: Content {
         let username: String
+        let name: String
         let latitude: Double
         let longitude: Double
         let id: UUID
@@ -18,6 +20,9 @@ final class User: Model {
     
     @Field(key: "username")
     var username: String
+    
+    @Field(key: "name")
+    var name: String
     
     @Field(key: "password_hash")
     var passwordHash: String
@@ -34,20 +39,24 @@ final class User: Model {
     @Timestamp(key: "updated_at", on: .update)
     var updatedAt: Date?
     
+    @Siblings(through: UsersFriends.self, from: \.$user, to: \.$friend)
+    var users: [User]
+    
     init() {}
     
-    init(id: UUID? = nil, username: String, passwordHash: String, latitude: Double, longitude: Double) {
+    init(id: UUID? = nil, username: String, passwordHash: String, latitude: Double, longitude: Double, name: String) {
         self.id = id
         self.username = username
         self.passwordHash = passwordHash
         self.latitude = latitude
         self.longitude = longitude
+        self.name = name
     }
 }
 
 extension User {
     static func create(from userSignup: UserSignup) throws -> User {
-        User(username: userSignup.username, passwordHash: try Bcrypt.hash(userSignup.password), latitude:userSignup.latitude, longitude:userSignup.longitude)
+        User(username: userSignup.username, passwordHash: try Bcrypt.hash(userSignup.password), latitude:userSignup.latitude, longitude:userSignup.longitude, name: userSignup.name)
     }
     
     func createToken(source: SessionSource) throws -> Token {
@@ -59,6 +68,7 @@ extension User {
     
     func asPublic() throws -> Public {
         Public(username: username,
+               name: name,
                latitude: latitude,
                longitude: longitude,
                id: try requireID(),
