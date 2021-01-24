@@ -155,20 +155,20 @@ struct UserController: RouteCollection {
     }
     
     func getAllHandler(req: Request) throws -> EventLoopFuture<[User]> {
-//        return User.query(on: req.db).all()
-//    }
-        let myUser = try req.auth.require(User.self)
-        let users = UsersFriends.query(on: req.db).group(.or) { group in
-            group.filter(\.$user.$id == myUser.id!).filter(\.$friend.$id == myUser.id!)
-        }.all().flatMap { usfr -> EventLoopFuture<[User]> in
-            for usfrone in usfr {
-                return User.query(on: req.db).group(.or) { group in
-                    return group.filter(\.$id == usfrone.user!).filter(\.$id == usfrone.friend!)
-                }
-            }
-        }
-        return users
+        return User.query(on: req.db).all()
     }
+//        let myUser = try req.auth.require(User.self)
+//        let users = UsersFriends.query(on: req.db).group(.or) { group in
+//            group.filter(\.$user.$id == myUser.id!).filter(\.$friend.$id == myUser.id!)
+//        }.all().flatMap { usfr -> EventLoopFuture<[User]> in
+//            for usfrone in usfr {
+//                return User.query(on: req.db).group(.or) { group in
+//                    return group.filter(\.$id == usfrone.user!).filter(\.$id == usfrone.friend!)
+//                }
+//            }
+//        }
+//        return users
+//    }
     
     
     //  return User.query(on: req.db).with(\.$users).filter(\.$id == myUser.id!).all()
